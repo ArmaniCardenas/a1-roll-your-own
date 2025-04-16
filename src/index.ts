@@ -21,5 +21,6 @@ btn.onClick( () =>
     let i = 0; 
     lbl1.text = `Clicked ${ btn.i} times`;
     btn.size = { width: btn.size.width + 20, height: btn.size.height + 1 };
+    btn.label = (btn.label === "Click Me") ? "Clicked!" : "Click Me";
    
 });
