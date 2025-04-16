@@ -15,3 +15,11 @@ let btn = new Button(w);
 btn.tabindex = 2;
 btn.fontSize = 14
 btn.move(12, 50)
+
+btn.onClick( () =>
+{
+    let i = 0; 
+    lbl1.text = `Clicked ${ btn.i} times`;
+    btn.size = { width: btn.size.width + 20, height: btn.size.height + 1 };
+   
+});

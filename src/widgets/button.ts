@@ -15,6 +15,12 @@ class Button extends Widget{
     private defaultFontSize: number = 18;
     private defaultWidth: number = 80;
     private defaultHeight: number = 30;
+    public i: number = 0; 
+
+
+
+    private onCallback: (() => void) | null = null; 
+
 
     constructor(parent:Window){
         super(parent);
@@ -37,6 +43,38 @@ class Button extends Widget{
         this._fontSize= size;
         this.update();
     }
+
+    get label(): string {
+        return this._input;
+    }
+
+    set label(newLabel: string)
+    {
+        this._input = newLabel;
+        this.update(); 
+    }
+
+
+    get size(): {width: number, height: number} {
+        return {width: this.width, height: this.height};
+    }
+
+    set size(dim: {width: number, height: number}) {
+        this.width = dim.width;
+        this.height = dim.height; 
+
+        if (this._rect)
+        {
+            this._rect.size(dim.width, dim.height);
+            const eventRect  = this._group.findOne('rect[opacity="0"]') as Rect;
+            if (eventRect )
+            {
+                eventRect.size(dim.width, dim.height);
+            }
+        }
+        this.update(); 
+    }
+
 
     private positionText(){
         let box:Box = this._text.bbox();
@@ -81,37 +119,52 @@ class Button extends Widget{
 
         if (this.previousState instanceof PressedWidgetState)
             this.raise(new EventArgs(this));
+
+            if (this.onCallback)
+            {
+                this.onCallback(); 
+            }
     }
 
     //TODO: implement the onClick event using a callback passed as a parameter
-    onClick(/*TODO: add callback parameter*/):void{}
+    onClick(callback: () => void):void{
+        this.onCallback = callback; 
+    }
 
     
     //TODO: give the states something to do! Use these methods to control the visual appearance of your
     //widget
     idleupState(): void {
-        throw new Error("Method not implemented.");
+        this.backcolor = "green";
+        this.update(); 
     }
     idledownState(): void {
-        throw new Error("Method not implemented.");
+        this.backcolor = "orange"
+        this.update(); 
     }
     pressedState(): void {
-        throw new Error("Method not implemented.");
+        this.i++; 
+        this.backcolor = "yellow";
+        this.update(); 
     }
     hoverState(): void {
-        throw new Error("Method not implemented.");
+        this.backcolor = "purple"; 
+        this.update();
     }
     hoverPressedState(): void {
-        throw new Error("Method not implemented.");
+        this.backcolor = "blue"
+        this.update(); 
+    
     }
     pressedoutState(): void {
-        throw new Error("Method not implemented.");
+        this.backcolor = "pink"
+        this.update();
     }
     moveState(): void {
-        throw new Error("Method not implemented.");
+        this.backcolor = "brown";
     }
     keyupState(keyEvent?: KeyboardEvent): void {
-        throw new Error("Method not implemented.");
+        this.idleupState(); 
     }
 }
 
